@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src='http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js'></script>
+<script>
+var httpGetApp = angular.module('httpGetApp', []);
+httpGetApp.controller('httpGetController', ['$http', dependencyController]);
+
+function dependencyController($http) {
+    var vm = this;
+
+    vm.url = '/echo/json/';
+    vm.isLoading = false;
+    
+    vm.status = '';
+    vm.headers = '';
+    vm.config = '';
+    vm.data = '';
+    
+    vm.executeGet = function () {
+        var getCompleted = function(data, status, headers, config) {
+            vm.status = status;
+            vm.headers = headers;
+            vm.config = config;
+            vm.data = data;
+            vm.isLoading = false;
+        };
+        
+        vm.isLoading = true;
+        $http({
+            method: 'GET',
+            url: vm.url
+        }).success(function (data, status, headers, config) {
+            getCompleted(data, status, headers, config);
+        }).error(function (data, status, headers, config) {
+            getCompleted(data, status, headers, config);
+        });
+    };
+
+    vm.output = '';
+}
+</script>
+</head>
+<body>
+<div ng-app="httpGetApp" ng-controller="httpGetController">
+    <input type="text" ng-model="vm.url" ng-disabled="vm.isLoading">
+        <button ng-click="vm.executeGet()" ng-disabled="vm.isLoading">GET</button><br /><br />
+    <table border="1">
+        <tr><td>Status</td><td width="100%">{{vm.status}}</td></tr>
+        <tr><td>Headers</td><td>{{vm.headers}}</td></tr>
+        <tr><td>Config</td><td>{{vm.config}}</td></tr>
+        <tr><td>Data</td><td>{{vm.data}}</td></tr>
+    </table>
+</div>
+</body>
+</html>
