@@ -33,10 +33,10 @@ public class Starter {
 		// TODO Auto-generated method stub
 
 	    // set subscriber id, eg. my-sub
-	    String subscriptionId = args[0]; //"my-test-sub";
-	    String PROJECT_ID = args[1];
-	    String dbipandport = args[2];
-	    String dbname = args[3];
+	    String subscriptionId = args[0]; 	//my-test-sub
+	    String PROJECT_ID = args[1]; 		//cobalt-balancer-198516 
+	    String dbipandport = args[2];		//35.188.4.53:3306
+	    String dbname = args[3];			//narrowband
 	    ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(PROJECT_ID, subscriptionId);
 	    Subscriber subscriber = null;
 	    try {
