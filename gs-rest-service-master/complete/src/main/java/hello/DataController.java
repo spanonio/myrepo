@@ -24,14 +24,14 @@ public class DataController {
 
     @RequestMapping("/test")
     public Data testMeth(
-    		@RequestParam(value="pname", defaultValue="World") String pname,
-    		@RequestParam(value="tname", defaultValue="World") String tname,
-    		@RequestParam(value="aname", defaultValue="World") String aname,
-    		@RequestParam(value="avalue", defaultValue="World") String avalue,
-    		@RequestParam(value="msg", defaultValue="World") String msg) throws Exception {
+    		@RequestParam(value="pname", defaultValue="cobalt-balancer-198516") String pname,
+    		@RequestParam(value="tname", defaultValue="to-gateway") String tname,
+    		@RequestParam(value="aname", defaultValue="topic") String aname,
+    		@RequestParam(value="avalue", defaultValue="gateway-command/foo") String avalue,
+    		@RequestParam(value="msgs", defaultValue="NOMSG") String msgs) throws Exception {
     	
     	
-		ProjectTopicName topicName = ProjectTopicName.of("narroband3", "to-gateway");
+		ProjectTopicName topicName = ProjectTopicName.of(pname, tname);
 		Publisher publisher = null;
 		List<ApiFuture<String>> messageIdFutures = new ArrayList<ApiFuture<String>>();
 
@@ -39,12 +39,12 @@ public class DataController {
 		  // Create a publisher instance with default settings bound to the topic
 		  publisher = Publisher.newBuilder(topicName).build();
 
-		  List<String> messages = Arrays.asList(msg);
+		  List<String> messages = Arrays.asList(msgs.split(";"));
 
 		  // schedule publishing one message at a time : messages get automatically batched
 		  for (String message : messages) {
 		    ByteString data = ByteString.copyFromUtf8(message);
-		    PubsubMessage pubsubMessage = PubsubMessage.newBuilder().putAttributes("topic", "gateway-command/foo").setData(data).build();
+		    PubsubMessage pubsubMessage = PubsubMessage.newBuilder().putAttributes(aname, avalue).setData(data).build();
 
 		    // Once published, returns a server-assigned message id (unique within the topic)
 		    ApiFuture<String> messageIdFuture = publisher.publish(pubsubMessage);
@@ -63,6 +63,6 @@ public class DataController {
 		    publisher.shutdown();
 		  }
 		}
-        return new Data(pname,tname,aname,avalue);
+        return new Data(pname,tname,aname,avalue,msgs);
     }
 }

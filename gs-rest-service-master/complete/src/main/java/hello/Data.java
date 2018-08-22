@@ -6,15 +6,25 @@ public class Data {
     private String tname;
     private String aname;
     private String avalue;
+    private String msgs;
+    
 
-    public Data(String pname, String tname, String aname, String avalue) {
+    public Data(String pname, String tname, String aname, String avalue, String msgs) {
         this.pname = pname;
         this.tname = tname;
         this.aname = aname;
         this.avalue = avalue;
+        this.msgs = msgs;
     }
     
-    
+
+	public String getMsgs() {
+		return msgs;
+	}
+
+	public void setMsgs(String msgs) {
+		this.msgs = msgs;
+	}
 
 	public String getPname() {
 		return pname;
